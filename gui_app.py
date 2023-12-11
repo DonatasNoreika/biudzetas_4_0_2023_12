@@ -12,11 +12,13 @@ class PagrindinisLangas:
         self.frame = tk.Frame(self.master)
         self.button1 = tk.Button(self.frame, text="Įvesti pajamas", command=self.atidaryti_pajamu_langa)
         self.button2 = tk.Button(self.frame, text="Įvesti išlaidas", command=self.atidaryti_islaidu_langa)
+        self.button3 = tk.Button(self.frame, text="Ištrinti įrašą", command=self.gui_istrinti_irasa)
         self.zurnalas = tk.Listbox(self.frame, width=50)
         self.balansas_label = tk.Label(self.frame, text=f"Balansas: {self.biudzetas.gauti_balansa()}")
         self.balansas_label.pack()
         self.button1.pack()
         self.button2.pack()
+        self.button3.pack()
         self.zurnalas.pack(pady=20)
         self.zurnalas.insert(tk.END, *self.biudzetas.zurnalas)
         self.frame.pack()
@@ -34,6 +36,11 @@ class PagrindinisLangas:
         self.zurnalas.delete(0, tk.END)
         self.zurnalas.insert(tk.END, *self.biudzetas.zurnalas)
         self.balansas_label['text'] = f"Balansas: {self.biudzetas.gauti_balansa()}"
+
+    def gui_istrinti_irasa(self):
+        indeksas = self.zurnalas.curselection()[0]
+        self.biudzetas.istrinti_irasa(indeksas)
+        self.update_zurnalas_balansas()
 
 
 class PajamuLangas:

@@ -37,3 +37,7 @@ class Biudzetas:
             if type(irasas) is IslaiduIrasas:
                 balansas -= irasas.suma
         return balansas
+
+    def istrinti_irasa(self, indeksas):
+        self.zurnalas.pop(indeksas)
+        self.irasyti_i_faila()
