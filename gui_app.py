@@ -23,15 +23,22 @@ class PagrindinisLangas:
 
     def atidaryti_pajamu_langa(self):
         self.newWindow = tk.Toplevel(self.master)
-        self.app = PajamuLangas(self.newWindow, self.biudzetas)
+        self.app = PajamuLangas(self.newWindow, self.biudzetas, self)
 
     def atidaryti_islaidu_langa(self):
         self.newWindow = tk.Toplevel(self.master)
-        self.app = IslaiduLangas(self.newWindow, self.biudzetas)
+        self.app = IslaiduLangas(self.newWindow, self.biudzetas, self)
+
+
+    def update_zurnalas_balansas(self):
+        self.zurnalas.delete(0, tk.END)
+        self.zurnalas.insert(tk.END, *self.biudzetas.zurnalas)
+        self.balansas_label['text'] = f"Balansas: {self.biudzetas.gauti_balansa()}"
 
 
 class PajamuLangas:
-    def __init__(self, master, biudzetas):
+    def __init__(self, master, biudzetas, pagrindinis_langas):
+        self.pagrindinis_langas = pagrindinis_langas
         self.master = master
         self.biudzetas = biudzetas
         self.master.title("Biudžetas: įvesti pajamas")
@@ -57,11 +64,13 @@ class PajamuLangas:
         siuntejas = self.siuntejas_entry.get()
         info = self.info_entry.get()
         self.biudzetas.prideti_pajamu_irasa(suma, siuntejas, info)
+        self.pagrindinis_langas.update_zurnalas_balansas()
         self.master.destroy()
 
 
 class IslaiduLangas:
-    def __init__(self, master, biudzetas):
+    def __init__(self, master, biudzetas, pagrindinis_langas):
+        self.pagrindinis_langas = pagrindinis_langas
         self.master = master
         self.biudzetas = biudzetas
         self.master.title("Biudžetas: įvesti išlaidas")
@@ -92,6 +101,7 @@ class IslaiduLangas:
         isigyta = self.isigyta_entry.get()
         info = self.info_entry.get()
         self.biudzetas.prideti_islaidu_irasa(suma, budas, isigyta, info)
+        self.pagrindinis_langas.update_zurnalas_balansas()
         self.master.destroy()
 
 
