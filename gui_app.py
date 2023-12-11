@@ -4,6 +4,7 @@ from biudzetas import Biudzetas
 
 class PagrindinisLangas:
     def __init__(self, master):
+        self.biudzetas = Biudzetas()
         self.master = master
         self.master.title("Biudžetas")
         self.master.geometry("420x400")
@@ -11,23 +12,28 @@ class PagrindinisLangas:
         self.frame = tk.Frame(self.master)
         self.button1 = tk.Button(self.frame, text="Įvesti pajamas", command=self.atidaryti_pajamu_langa)
         self.button2 = tk.Button(self.frame, text="Įvesti išlaidas", command=self.atidaryti_islaidu_langa)
+        self.zurnalas = tk.Listbox(self.frame, width=50)
+        self.balansas_label = tk.Label(self.frame, text=f"Balansas: {self.biudzetas.gauti_balansa()}")
+        self.balansas_label.pack()
         self.button1.pack()
         self.button2.pack()
+        self.zurnalas.pack(pady=20)
+        self.zurnalas.insert(tk.END, *self.biudzetas.zurnalas)
         self.frame.pack()
 
     def atidaryti_pajamu_langa(self):
         self.newWindow = tk.Toplevel(self.master)
-        self.app = PajamuLangas(self.newWindow)
+        self.app = PajamuLangas(self.newWindow, self.biudzetas)
 
     def atidaryti_islaidu_langa(self):
         self.newWindow = tk.Toplevel(self.master)
-        self.app = IslaiduLangas(self.newWindow)
+        self.app = IslaiduLangas(self.newWindow, self.biudzetas)
 
 
 class PajamuLangas:
-    def __init__(self, master):
+    def __init__(self, master, biudzetas):
         self.master = master
-        self.biudzetas = Biudzetas()
+        self.biudzetas = biudzetas
         self.master.title("Biudžetas: įvesti pajamas")
         self.master.geometry("320x150")
         self.master.config(padx=20, pady=20)
@@ -55,9 +61,9 @@ class PajamuLangas:
 
 
 class IslaiduLangas:
-    def __init__(self, master):
+    def __init__(self, master, biudzetas):
         self.master = master
-        self.biudzetas = Biudzetas()
+        self.biudzetas = biudzetas
         self.master.title("Biudžetas: įvesti išlaidas")
         self.master.geometry("320x150")
         self.master.config(padx=20, pady=20)
