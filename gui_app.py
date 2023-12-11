@@ -1,5 +1,5 @@
 import tkinter as tk
-
+from biudzetas import Biudzetas
 
 class PagrindinisLangas:
     def __init__(self, master):
@@ -22,6 +22,7 @@ class PagrindinisLangas:
 class PajamuLangas:
     def __init__(self, master):
         self.master = master
+        self.biudzetas = Biudzetas()
         self.master.title("Biudžetas: įvesti pajamas")
         self.master.geometry("320x150")
         self.master.config(padx=20, pady=20)
@@ -31,7 +32,7 @@ class PajamuLangas:
         self.siuntejas_entry = tk.Entry(self.master)
         self.info_label = tk.Label(self.master, text="Papildoma informacija")
         self.info_entry = tk.Entry(self.master)
-        self.ivesti_button = tk.Button(self.master, text="Įvesti")
+        self.ivesti_button = tk.Button(self.master, text="Įvesti", command=self.gui_ivesti_pajamas)
         self.suma_label.grid(row=0, column=0)
         self.suma_entry.grid(row=0, column=1)
         self.siuntejas_label.grid(row=1, column=0)
@@ -39,6 +40,13 @@ class PajamuLangas:
         self.info_label.grid(row=2, column=0)
         self.info_entry.grid(row=2, column=1)
         self.ivesti_button.grid(row=3, columnspan=2)
+
+    def gui_ivesti_pajamas(self):
+        suma = float(self.suma_entry.get())
+        siuntejas = self.siuntejas_entry.get()
+        info = self.info_entry.get()
+        self.biudzetas.prideti_pajamu_irasa(suma, siuntejas, info)
+        self.master.destroy()
 
 
 def main():
